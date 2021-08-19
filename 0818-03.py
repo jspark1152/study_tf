@@ -34,7 +34,7 @@ with tf.Session() as sess:
         if step%50==0:
             print(step, cost_val)
     
-
+github test
 
 
 
