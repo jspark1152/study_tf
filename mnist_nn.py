@@ -1,12 +1,13 @@
 import tensorflow.compat.v1 as tf 
 tf.disable_v2_behavior()
-import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow import keras
 
 #라벨 : 0,1,2,...,9 까지 총 10개
 nb_classes=10
 
+#구글링하면 문제 해결 다 가능한듯..
+#mac에서 mnist데이터 로드 과정에서 이슈 발생 > 파이썬 certification 업데이트로 해결
 #mnist 데이터를 불러들이는 과정
 mnist=tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test)=mnist.load_data()
