@@ -38,11 +38,38 @@ Y=tf.placeholder(tf.int32, shape=[None, 1])
 Y_one_hot=tf.one_hot(Y, nb_classes)
 Y_one_hot=tf.reshape(Y_one_hot, [-1, nb_classes])
 
-W=tf.Variable(tf.random_normal([784, nb_classes]), name='weight')
-b=tf.Variable(tf.random_normal([1, nb_classes]), name='bias')
+#W=tf.Variable(tf.random_normal([784, nb_classes]), name='weight')
+#b=tf.Variable(tf.random_normal([1, nb_classes]), name='bias')
+
+#Neural Network
+W1=tf.Variable(tf.random_normal([784,100]), name='weight1')
+b1=tf.Variable(tf.random_normal([1,100]), name='bias1')
+layer1=tf.nn.softmax(tf.matmul(X,W1)+b1)
+
+W2=tf.Variable(tf.random_normal([100,80]), name='weight2')
+b2=tf.Variable(tf.random_normal([1,80]), name='bias2')
+layer2=tf.nn.softmax(tf.matmul(layer1,W2)+b2)
+
+W3=tf.Variable(tf.random_normal([80,60]), name='weight3')
+b3=tf.Variable(tf.random_normal([1,60]), name='bias3')
+layer3=tf.nn.softmax(tf.matmul(layer2,W3)+b3)
+
+W4=tf.Variable(tf.random_normal([60,40]), name='weight4')
+b4=tf.Variable(tf.random_normal([1,40]), name='bias4')
+layer4=tf.nn.softmax(tf.matmul(layer3,W4)+b4)
+
+W5=tf.Variable(tf.random_normal([40,20]), name='weight5')
+b5=tf.Variable(tf.random_normal([1,20]), name='bias5')
+layer5=tf.nn.softmax(tf.matmul(layer4,W5)+b5)
+
+W6=tf.Variable(tf.random_normal([20,nb_classes]), name='weight6')
+b6=tf.Variable(tf.random_normal([1,nb_classes]), name='bias6')
 
 #softmax를 통해 텐서의 값들의 합이 1이 되게끔 변환
-hypothesis=tf.nn.softmax(tf.matmul(X,W)+b)
+#hypothesis=tf.nn.softmax(tf.matmul(X,W)+b)
+
+hypothesis=tf.nn.softmax(tf.matmul(layer5,W6)+b6)
+
 
 cost=tf.reduce_mean(tf.reduce_sum(-Y_one_hot*tf.log(hypothesis), axis=1))
 
@@ -55,7 +82,7 @@ accuracy=tf.reduce_mean(correction)
 
 
 batch_size=100
-epochs=30
+epochs=200
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -65,7 +92,7 @@ with tf.Session() as sess:
         for i in range(batch_count):
             batch_xs, batch_ys= x_train[i*batch_size:(i+1)*batch_size], y_train[i*batch_size:(i+1)*batch_size]
             cost_val,_=sess.run([cost,optimizer], feed_dict={X:batch_xs, Y:batch_ys})
-            if i%20==0:
+            if i%100==0:
                 print(i, cost_val)
 
     pred, corr, acc = sess.run([prediction, correction, accuracy], feed_dict={X:x_test, Y:y_test})
