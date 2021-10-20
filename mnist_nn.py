@@ -42,6 +42,7 @@ Y_one_hot=tf.reshape(Y_one_hot, [-1, nb_classes])
 #b=tf.Variable(tf.random_normal([1, nb_classes]), name='bias')
 
 #Neural Network
+#NN 을 이용하는데 정확도가 점점 떨어지는 문제 발생 > sigmoid에 문제가 있음
 W1=tf.Variable(tf.random_normal([784,100]), name='weight1')
 b1=tf.Variable(tf.random_normal([1,100]), name='bias1')
 layer1=tf.nn.softmax(tf.matmul(X,W1)+b1)
