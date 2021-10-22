@@ -1,0 +1,60 @@
+Machine Learning
+분석하고자 하는 데이터를 기초로 머신이 학습 또는 Task를 수행하게 되고 그 수행결과 값이 실제 값과 같은지를 판단하는 과정
+1. 학습에 사용할 기초 Dataset을 수집하는 단계
+2. 학습 수행 단계에서 Algorithm 적용
+3. 수행한 결과, 실제 값을 비교하여 적절한지 여부를 판단
+
+Supervised/Unsupervised Learning
+1. Supervised Learning
+- 결과 값의 정보가 주어진 상태에서의 학습
+- Dataset이 결과 값을 포함하고 있어 수행하여 얻은 값과 실제 값의 오차를 비교
+ex) 집 평수에 따른 집의 가격 분석 : 사이즈가 커질수록 매매가 증가 > 이러한 연속적인 형태를 Regression
+ex) 종양 크기에 따른 분류 : 일정 기준 이상일 경우 악성 종양으로 구분 > 이러한 Y/N 형태를 Classification
+2. Unsupervised Learning
+- 자율학습이라고도 함
+- 결과 값(답)을 알고 있지 않은 상태에서의 학습
+- Dataset이 어떤 데이터로 구성이 되어 있는지도 모를 때 사용
+ex) 물건을 구매한 고객 데이터 > 연령대/소득수준 등으로 구분하여 분석 or 시장 점유율과 같은 결과로도 나타냄
+
+Linear Regression
+Y = AX + B
+연속적인 Dataset을 분석하는데 있어서 근사된 직선을 표현하는 것이 목적
+즉, 각 데이터들과의 오차가 가장 작은 Line을 구하는 것이 목표
+머신러닝을 통해 A와 B의 값을 찾아낼 수 있음
+
+이를 토대로 Hypothesis를 설정
+
+hypothesis = X*W + b (W : Weight, b : bias)
+
+실제 값과 가정과의 차이를 설정
+
+cost = hypothesis - Y >> cost = tf.reduce_mean(tf.square(hypothesis-Y))
+* hypothesis - Y 의 값이 음수일수도 있기에 제곱을 함
+** 이 때 코스트 값은 클수록 효율이 떨어지기 때문에 위와 같이 평균값으로 설정
+
+Optimizer는 Gradient Descent Optimizer를 보통 이용(추후에 Adam Optimizer를 이용)
+
+Gradient Descent = 경사하강법
+최적화할 함수 f(x)에 대하여 주어진 x_i에서 x_(i+1)은 다음과 같이 계산
+x_(i+1) = x_i - k_i * f'(x_i)
+이 때 k 를 learining_rate으로 정의
+함수 f를 cost 함수로 두고 보면 편미분의 형태로 적용될 것
+> gradient = tf.reduce_mean(2*(W*X+b - Y)*X)
+> descent = W - (learning_rate)*gradient 로서 구현
+
+[학습의 최종 목표는 Cost 값의 최소화]
+
+Sigmoid Function
+Logistic 함수로 완만한 커브 형태를 띔
+모든 실수 값을 0~1 사이의 미분 가능한 그래프로 변환
+즉 확률로 해석할 때 유용
+실제로 통계에서 누적 분포 함수로서 사용
+> Logistic/Binary Classification과 Cost Function에 사용
+
+Rectified Linear Unit(ReLU)
+0보다 작거나 같은 경우는 0으로 반환하고 0보다 큰 경우는 그 값 그대로 반환
+> 레이어가 많은 경우 ReLU를 적용하다가 마지막 레이어에서 Sigmoid를 적용하면 정확도가 상승
+
+Softmax
+N개의 다른 이벤트에 대해 이벤트의 확률 분포를 계산
+이 때 모든 확률의 합은 1
