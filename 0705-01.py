@@ -1,4 +1,3 @@
-#%%
 
 #as 의미는 tf 로 텐서플로를 이용하겠다는 의미
 import tensorflow.compat.v1 as tf
@@ -31,4 +30,4 @@ for i in range(-30,50):
 #show the cost function
 plt.plot(W_val, cost_val)
 plt.show()
-# %%
+
