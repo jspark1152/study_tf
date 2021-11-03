@@ -44,17 +44,29 @@ x_(i+1) = x_i - k_i * f'(x_i)
 
 [학습의 최종 목표는 Cost 값의 최소화]
 
-Sigmoid Function
+Logit = Log Odds 의 약어
+Odds(사건 발생 확률의 비율)에 Log를 취한 것을 의미
+> Logit 값이 양수라면 A로, 음수라면 B로 분류
+
+Sigmoid Function H(X) = 1 / 1+exp[X*W+b]
 Logistic 함수로 완만한 커브 형태를 띔
 모든 실수 값을 0~1 사이의 미분 가능한 그래프로 변환
-즉 확률로 해석할 때 유용
-실제로 통계에서 누적 분포 함수로서 사용
-> Logistic/Binary Classification과 Cost Function에 사용
+> Logistic/Binary Classification에 사용
+> Non-Convex Curve이기 때문에 G.D Optimizer를 사용할 경우 local minimum인지 global minimum인지 구분이 어려움
+> 따라서 Cost 함수에 변형을 줌(exp의 영향을 없애기 위해 log를 취함)
+ex) Binary Classification에서 Y = 0 or 1 이기 때문에
+Cost(H(X), Y) = -[Y*log(H(X)) + ((1-Y)*log(1-H(X)))]
+- Y = 0 이면 Cost = -log(1-H(X)) 해석해보면 예상값이 실제값 0과 가까워질수록 Cost 값이 감소함(0에 가까워짐)
+- Y = 1 이면 Cost = -log(H(X)) 해석해보면 예상값이 실제값 1과 가까워질수록 Cost 값이 감소함(0에 가까워짐)
+* 단점 : 여러번 돌릴 경우 0 또는 1로 수렴해버리는 치명적인 약점.. 지금은 거의 사용하지 않는다고 함;;
 
 Rectified Linear Unit(ReLU)
 0보다 작거나 같은 경우는 0으로 반환하고 0보다 큰 경우는 그 값 그대로 반환
 > 레이어가 많은 경우 ReLU를 적용하다가 마지막 레이어에서 Sigmoid를 적용하면 정확도가 상승
 
 Softmax
+Sigmoid는 결과의 경우가 0 또는 1처럼 양분된 경우에서만 사용되는 한계를 가짐 > 이를 Softmax가 해결
 N개의 다른 이벤트에 대해 이벤트의 확률 분포를 계산
-이 때 모든 확률의 합은 1
+확률을 계산할 때 사용하는 함수로서 모든 이벤트의 합이 1인 확률을 의미
+Prob of ith = Prob of ith / Sum for all n[Prob of nth]
+이를 직접 계산할 필요는 없음 > 명령어 한줄로 가능 tf.nn.softmax(tf.matmul(X,W)+b)
